@@ -1,3 +1,6 @@
+## Cần phải download file model.onnx_data rồi để vào trong folder models sau khi clone
+Truy cập link này để tải: https://huggingface.co/BAAI/bge-m3/tree/main/onnx
+
 ## Chatbot này sử dụng api của Google AI Studio
 Truy cập vào link này, tạo 1 api key: https://aistudio.google.com/api-keys
 
@@ -9,7 +12,7 @@ GOOGLE_API_KEY=your_api_key_here
 ## Chạy file docker-build.bat
 
 ## Credit
-Local embedding model: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/tree/main
+Local embedding model: https://huggingface.co/BAAI/bge-m3/tree/main/
 
 ## 📊 Chatbot Workflow Diagram
 
