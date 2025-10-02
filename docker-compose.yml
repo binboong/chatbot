@@ -1,0 +1,88 @@
+services:
+  chatbot:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: chatbot_service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    
+    # Volume mounts để persist data
+    volumes:
+      - ./data:/app/data:ro  # Read-only cho data
+      - ./vector_db:/app/vector_db:rw  # Read-write cho vector DB
+      - ./models:/app/models:ro  # Read-only cho local models
+      - huggingface_cache:/root/.cache/huggingface:rw  # Cache cho models
+    
+    # Environment variables
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONIOENCODING=utf-8
+      - PYTHONUTF8=1
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    
+    # Health check với delay để đợi model download
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s  # Tăng lên 120s để đợi model download
+    
+    # Resource limits để tránh container chiếm hết RAM
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+          cpus: '10'
+        reservations:
+          memory: 1G
+          cpus: '1'
+    
+    # Network mode
+    networks:
+      - chatbot_network
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Stdin và tty cho interactive mode
+    stdin_open: true
+    tty: true
+
+  # Optional: Redis cho caching (uncomment nếu cần)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: chatbot_redis
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - chatbot_network
+
+# Named volumes
+volumes:
+  huggingface_cache:
+    driver: local
+  # redis_data:  # Uncomment nếu dùng Redis
+  #   driver: local
+
+# Network configuration
+networks:
+  chatbot_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

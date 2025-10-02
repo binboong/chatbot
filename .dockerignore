@@ -1,0 +1,82 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# IDE và editors
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+env/
+venv/
+.venv/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# Data và databases - mount bằng volumes
+data/
+vector_db/
+*.sqlite
+*.sqlite3
+*.db
+
+# Cache directories (KHÔNG bỏ qua models/)
+.cache/
+.pytest_cache/
+.coverage
+.nyc_output
+
+# Logs
+*.log
+logs/
+
+# Testing
+tests/
+.tox/
+htmlcov/
+.hypothesis/
+
+# Documentation và README
+*.md
+README*
+docs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+tmp/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Environment files
+.env*
+
+# Docker files khác
+docker-compose*.yml
+
+# Windows specific
+*.bat
+
+# GIỮ LẠI models/ folder - không bỏ qua
+# models/
+
+test.py
